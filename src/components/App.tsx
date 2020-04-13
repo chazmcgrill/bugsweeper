@@ -35,7 +35,7 @@ class MinesweeperGame extends Component<{}, State> {
         this.createGrid();
     }
 
-    createGrid = () => {
+    createGrid = (): void => {
         const totalArea = GAME.width * GAME.height;
         // generate mined locations use recursion to not allow duplicates
         let mineIndexs: number[] = [];
@@ -70,7 +70,7 @@ class MinesweeperGame extends Component<{}, State> {
     }
 
     // get initial neigbours for each node
-    findNeighbours = (item: GridTile, mines: number[]) => {
+    findNeighbours = (item: GridTile, mines: number[]): number => {
         let neigbours = this.getNeighbourIds(item);
         return neigbours.filter(id => mines.includes(id)).length;
     }
@@ -104,7 +104,7 @@ class MinesweeperGame extends Component<{}, State> {
         return idArray;
     }
 
-    newTileStatus = (item: GridTile) => {
+    newTileStatus = (item: GridTile): number[] => {
         if (item.neighbours === 0) {
             const { grid } = this.state;
             this.floodFill(item, this.state.grid);
@@ -122,7 +122,7 @@ class MinesweeperGame extends Component<{}, State> {
         return [item.id];
     }
 
-  floodFill = (item: GridTile, grid: GridTile[]) => {
+  floodFill = (item: GridTile, grid: GridTile[]): void => {
         if (this.floodStack.includes(item.id) || item.neighbours !== 0 || item.showing || item.flagged) {
             return;
         }
@@ -140,7 +140,7 @@ class MinesweeperGame extends Component<{}, State> {
         return;
   }
 
-    endStateCheck = (grid: GridTile[], flags: number) => {
+    endStateCheck = (grid: GridTile[], flags: number): string | false => {
         const openTiles = grid.filter(t => t.showing === true).length;
 
         /* check flags match mines and open tiles matches expected value */
@@ -151,7 +151,7 @@ class MinesweeperGame extends Component<{}, State> {
         return false;
     }
 
-    handleReset = () => {
+    handleReset = (): void => {
         this.floodStack = [];
         this.createGrid();
     }
