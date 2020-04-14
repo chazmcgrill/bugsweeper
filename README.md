@@ -1,5 +1,6 @@
 # Bugsweeper Game
 
+[![CircleCI](https://circleci.com/gh/chazmcgrill/bugsweeper/tree/master.svg?style=svg)](https://circleci.com/gh/chazmcgrill/bugsweeper/tree/master)
 [![GitHub Release](https://img.shields.io/github/v/release/chazmcgrill/bugsweeper)](https://github.com/chazmcgrill/bugsweeper/releases)
 [![PR's Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat)](http://makeapullrequest.com)
 [![Twitter Follow](https://img.shields.io/twitter/follow/charlietcoder.svg?style=social)](https://twitter.com/charlietcoder)
