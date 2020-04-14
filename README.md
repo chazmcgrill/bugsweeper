@@ -12,7 +12,7 @@ The most interesting part was working out how to clear the empty
 cells. This required building a 'flood fill' algorithm and 
 applying this to the react logic.
 
-Play the game [here](https://charlietaylorcoder.com/bugsweeper/)
+Play the game [here](https://bugsweeper.charlietaylorcoder.com/)
 
 #### Tech Stack
 - [React](https://reactjs.org/)
