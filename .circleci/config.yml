@@ -55,8 +55,8 @@ jobs:
       - run:
           name: deploy to hosting
           command: |
-            ssh-keyscan -t rsa ${DEPLOY_SERVER_IP} >> ~/.ssh/known_hosts
-            scp -r ~/repo/build/. ${DEPLOY_USER}@${DEPLOY_SERVER_IP}:${DEPLOY_DIR}
+            ssh-keyscan -t rsa ${DEPLOY_HOST} >> ~/.ssh/known_hosts
+            scp -r ~/repo/build/. ${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_DIR}
 
 workflows:
   version: 2.1
@@ -66,6 +66,6 @@ workflows:
       - deploy:
           requires:
             - build
-        #   filters:
-        #     branches:
-        #       only: master
+          filters:
+            branches:
+              only: master
