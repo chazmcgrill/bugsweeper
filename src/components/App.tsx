@@ -1,143 +1,89 @@
-import React, {Component} from 'react';
+import React, { useState, useEffect } from 'react';
 import Controls from './Controls';
 import Board from './Board';
 import Footer from './Footer';
 import { GAME_CONFIG } from '../utils/config';
-import { getNeighbourIds, createNewBoard } from '../utils/helpers';
+import { createNewBoard, endStateCheck, newTileStatus } from '../utils';
 
-interface State {
+export let floodStack = [] as number[];
+
+interface GameState {
     grid: GridTile[];
-    mineIndexs: number[];
     flagCounter: number;
     endFlag: boolean | string;
 }
 
-class App extends Component<{}, State> {
-    state: State = {
-        grid: [],
-        mineIndexs: [],
-        flagCounter: 0,
-        endFlag: false
-    }
-    
-    floodStack = [] as number[];
+const DEFAULT_GAME_STATE = {
+    grid: [],
+    flagCounter: 0,
+    endFlag: false,
+};
 
-    componentDidMount() {
-        this.createGrid();
-    }
+const toggleGridItemFlag = (grid: GridTile[], id: number) => grid
+    .map(item => item.id === id ? { ...item, flagged: !item.flagged } : item);
 
-    createGrid = (): void => {
-        const { grid, mineIndexs } = createNewBoard();
-        this.setState({ grid, mineIndexs, flagCounter: 0, endFlag: false });
-    }
+const App = () => {
+    const [gameState, setGameState] = useState<GameState>(DEFAULT_GAME_STATE);
 
-    newTileStatus = (item: GridTile): number[] => {
-        if (item.neighbours === 0) {
-            const { grid } = this.state;
-            this.floodFill(item, this.state.grid);
+    const tileClick = (id: number): void => {
+        const { grid, endFlag, flagCounter } = gameState;
+        const currentItem = grid[id];
 
-            let neighbours = this.floodStack
-                .reduce((acc, cur) => {
-                    const neighbourIds = getNeighbourIds(grid[cur]);
-                    return acc.concat(neighbourIds);
-                }, [] as number[])
-                .filter((a, b, self) => self.indexOf(a) === b && !grid[a].flagged);
+        if (!endFlag) {
+            const ids = newTileStatus(currentItem, grid);
+            const newGrid = grid.map((item, index) => ids.includes(index) ? { ...item, showing: true } : item);
+            
+            let newEndFlag = endStateCheck(grid, flagCounter);
 
-            return this.floodStack.concat(neighbours);
-        }
+            if (currentItem.neighbours === 9) newEndFlag = "Oops Game Over!"
 
-        return [item.id];
-    }
-
-    floodFill = (item: GridTile, grid: GridTile[]): void => {
-        if (this.floodStack.includes(item.id) || item.neighbours !== 0 || item.showing || item.flagged) {
-            return;
-        }
-
-        this.floodStack.push(item.id);
-
-        let neighbours = getNeighbourIds(item);
-
-        for (let neighbour of neighbours) {
-            if (grid[neighbour].neighbours === 0) {
-                this.floodFill(grid[neighbour], grid);
-            }
-        }
-
-        return;
-    }
-
-    endStateCheck = (grid: GridTile[], flags: number): string | false => {
-        const openTiles = grid.filter(t => t.showing === true).length;
-
-        /* check flags match mines and open tiles matches expected value */
-        if (flags === GAME_CONFIG.mines && openTiles === grid.length - GAME_CONFIG.mines) {
-            return "You Win!"
-        }
-
-        return false;
-    }
-
-    handleReset = (): void => {
-        this.floodStack = [];
-        this.createGrid();
-    }
-
-    tileClick = (id: number): void => {
-        const currentItem = this.state.grid[id];
-
-        if (!this.state.endFlag) {
-            let ids = this.newTileStatus(currentItem);
-
-            const grid = this.state.grid.map((item, index) => {
-                return ids.includes(index) ? {...item, showing: true} : item;
-            });
-
-            let endFlag = this.endStateCheck(grid, this.state.flagCounter);
-
-            if (currentItem.neighbours === 9) endFlag = "Oops Game Over!"
-
-            this.setState({ grid, endFlag });
+            setGameState({ ...gameState, grid: newGrid, endFlag: newEndFlag })
         }
     }
 
-    tileRightClick = (id: number, event: React.MouseEvent<HTMLDivElement, MouseEvent>): void => {
+    const tileRightClick = (id: number, event: React.MouseEvent<HTMLDivElement, MouseEvent>): void => {
         event.preventDefault();
-        if (!this.state.endFlag) {
-            const grid = this.state.grid.map(n => (
-                n.id === id ? { ...n, flagged: !n.flagged } : n
-            ));
 
+        if (!gameState.endFlag) {
+            const grid = toggleGridItemFlag(gameState.grid, id);
             const flagCounter = grid.filter(n => n.flagged).length;
+            const endFlag = endStateCheck(grid, flagCounter);
 
-            const endFlag = this.endStateCheck(grid, flagCounter);
-
-            this.setState({ grid, flagCounter, endFlag });
+            setGameState({ grid, endFlag, flagCounter })
         }
     }
 
-    render() {
-        const {grid, flagCounter, endFlag} = this.state;
-
-        return (
-            <div className="app">
-                <div className="container">
-                    <Controls
-                        mines={GAME_CONFIG.mines}
-                        endGame={endFlag}
-                        flagCounter={flagCounter}
-                    />
-                    <Board
-                        grid={grid}
-                        handleTileClick={this.tileClick}
-                        handleRightClick={this.tileRightClick}
-                    />
-                    <button onClick={this.handleReset}>New Game</button>
-                </div>
-                <Footer />
-            </div>
-        );
+    const handleReset = (): void => {
+        floodStack = [];
+        const grid = createNewBoard();
+        setGameState({ ...DEFAULT_GAME_STATE, grid });
     }
+
+    useEffect(() => {
+        const grid = createNewBoard();
+        setGameState({ ...DEFAULT_GAME_STATE, grid });
+    }, []);
+
+    const { grid, endFlag, flagCounter } = gameState;
+
+    return (
+        <div className="app">
+            <div className="container">
+                <Controls
+                    mines={GAME_CONFIG.mines}
+                    endGame={endFlag}
+                    flagCounter={flagCounter}
+                />
+                <Board
+                    grid={grid}
+                    handleTileClick={tileClick}
+                    handleRightClick={tileRightClick}
+                />
+                <button onClick={handleReset}>New Game</button>
+            </div>
+            <Footer />
+        </div>
+    );
 }
 
 export default App;

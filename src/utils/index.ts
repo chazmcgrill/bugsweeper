@@ -1,4 +1,5 @@
 import { GAME_CONFIG } from "./config";
+import { floodStack } from "../components/App";
 
 enum TileStatus {
     empty,
@@ -36,7 +37,7 @@ export const createNewBoard = () => {
         return { ...item, neighbours };
     });
 
-    return { grid, mineIndexs };
+    return grid;
 }
 
 // get initial neigbours for each node
@@ -72,4 +73,49 @@ export const getNeighbourIds = (item: GridTile): number[] => {
     }
 
     return idArray;
+}
+
+export const endStateCheck = (grid: GridTile[], flags: number): string | false => {
+    const openTiles = grid.filter(t => t.showing === true).length;
+
+    if (flags === GAME_CONFIG.mines && openTiles === grid.length - GAME_CONFIG.mines) {
+        return "You Win!"
+    }
+
+    return false;
+}
+
+export const floodFill = (item: GridTile, grid: GridTile[]): void => {
+    if (floodStack.includes(item.id) || item.neighbours !== 0 || item.showing || item.flagged) {
+        return;
+    }
+
+    floodStack.push(item.id);
+
+    let neighbours = getNeighbourIds(item);
+
+    for (let neighbour of neighbours) {
+        if (grid[neighbour].neighbours === 0) {
+            floodFill(grid[neighbour], grid);
+        }
+    }
+
+    return;
+}
+
+export const newTileStatus = (item: GridTile, grid: GridTile[]): number[] => {
+    if (item.neighbours === 0) {
+        floodFill(item, grid);
+
+        let neighbours = floodStack
+            .reduce((acc, cur) => {
+                const neighbourIds = getNeighbourIds(grid[cur]);
+                return acc.concat(neighbourIds);
+            }, [] as number[])
+            .filter((a, b, self) => self.indexOf(a) === b && !grid[a].flagged);
+
+        return floodStack.concat(neighbours);
+    }
+
+    return [item.id];
 }
