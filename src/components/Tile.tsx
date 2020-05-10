@@ -28,11 +28,11 @@ const Tile = ({tileData, handleTileClick, handleRightClick}: Props) => {
     };
     
     return tileData.showing ? (
-        <div className="tile" style={tileStyle}>
+        <div className="tile" style={tileStyle} test-id="tile-showing">
             {tileInfo()}
         </div>
     ) : (
-        <div onClick={() => handleTileClick(tileData.id)} onContextMenu={(e) => handleRightClick(tileData.id, e)} className="tile">
+        <div onClick={() => handleTileClick(tileData.id)} onContextMenu={(e) => handleRightClick(tileData.id, e)} className="tile" test-id="tile-flagged">
             {tileData.flagged && <i className="fa fa-ban" />}
         </div>
     )

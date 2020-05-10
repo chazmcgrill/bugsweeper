@@ -2,17 +2,8 @@ import React, {Component} from 'react';
 import Controls from './Controls';
 import Board from './Board';
 import Footer from './Footer';
-
-const GAME = {
-    width: 10,
-    height: 10,
-    mines: 10
-}
-
-const TILE_STATUS = {
-    empty: 0,
-    mine: 1
-}
+import { GAME_CONFIG } from '../utils/config';
+import { getNeighbourIds, createNewBoard } from '../utils/helpers';
 
 interface State {
     grid: GridTile[];
@@ -21,7 +12,7 @@ interface State {
     endFlag: boolean | string;
 }
 
-class MinesweeperGame extends Component<{}, State> {
+class App extends Component<{}, State> {
     state: State = {
         grid: [],
         mineIndexs: [],
@@ -36,72 +27,8 @@ class MinesweeperGame extends Component<{}, State> {
     }
 
     createGrid = (): void => {
-        const totalArea = GAME.width * GAME.height;
-        // generate mined locations use recursion to not allow duplicates
-        let mineIndexs: number[] = [];
-
-        function getMines(): number {
-            let id = Math.floor(Math.random() * totalArea);
-            return mineIndexs.includes(id) ? getMines() : id;
-        }
-
-        while (mineIndexs.length < GAME.mines) {
-            mineIndexs.push(getMines());
-        }
-
-        // create grid with data for location and tile status
-        let baseGrid = Array
-            .apply(null, Array(totalArea))
-            .map((item, index) => {
-                const tile = mineIndexs.includes(index) ? TILE_STATUS.mine : TILE_STATUS.empty;
-                const row = Math.floor(index / GAME.width);
-                const col = index % GAME.width;
-
-                return {id: index, tile, row, col, showing: false, flagged: false}
-            });
-
-        // find neigbours for each cell
-        const grid = baseGrid.map(item => {
-            let neighbours = item.tile !== TILE_STATUS.mine ? this.findNeighbours(item, mineIndexs) : 9;
-            return {...item, neighbours};
-        });
-
+        const { grid, mineIndexs } = createNewBoard();
         this.setState({ grid, mineIndexs, flagCounter: 0, endFlag: false });
-    }
-
-    // get initial neigbours for each node
-    findNeighbours = (item: GridTile, mines: number[]): number => {
-        let neigbours = this.getNeighbourIds(item);
-        return neigbours.filter(id => mines.includes(id)).length;
-    }
-
-    // pass in a node get array of neighbours back
-    getNeighbourIds = (item: GridTile): number[] => {
-        const id = item.id;
-        const idArray = [];
-
-        // rule out edge cases
-        const leftEdge = item.col < 1;
-        const rightEdge = item.col === GAME.width - 1;
-
-        if (!leftEdge) idArray.push(id - 1);
-        if (!rightEdge) idArray.push(id + 1);
-
-        // check above
-        if (item.row > 0) {
-            if (!leftEdge) idArray.push((id - GAME.width) - 1);
-            idArray.push(id - GAME.width);
-            if (!rightEdge) idArray.push((id - GAME.width) + 1);
-        }
-
-        // check below
-        if (item.row < GAME.height - 1) {
-            if (!leftEdge) idArray.push((id + GAME.width) - 1);
-            idArray.push(id + GAME.width);
-            if (!rightEdge) idArray.push((id + GAME.width) + 1);
-        }
-
-        return idArray;
     }
 
     newTileStatus = (item: GridTile): number[] => {
@@ -111,7 +38,7 @@ class MinesweeperGame extends Component<{}, State> {
 
             let neighbours = this.floodStack
                 .reduce((acc, cur) => {
-                    const neighbourIds = this.getNeighbourIds(grid[cur]);
+                    const neighbourIds = getNeighbourIds(grid[cur]);
                     return acc.concat(neighbourIds);
                 }, [] as number[])
                 .filter((a, b, self) => self.indexOf(a) === b && !grid[a].flagged);
@@ -122,14 +49,14 @@ class MinesweeperGame extends Component<{}, State> {
         return [item.id];
     }
 
-  floodFill = (item: GridTile, grid: GridTile[]): void => {
+    floodFill = (item: GridTile, grid: GridTile[]): void => {
         if (this.floodStack.includes(item.id) || item.neighbours !== 0 || item.showing || item.flagged) {
             return;
         }
 
         this.floodStack.push(item.id);
 
-        let neighbours = this.getNeighbourIds(item);
+        let neighbours = getNeighbourIds(item);
 
         for (let neighbour of neighbours) {
             if (grid[neighbour].neighbours === 0) {
@@ -138,13 +65,13 @@ class MinesweeperGame extends Component<{}, State> {
         }
 
         return;
-  }
+    }
 
     endStateCheck = (grid: GridTile[], flags: number): string | false => {
         const openTiles = grid.filter(t => t.showing === true).length;
 
         /* check flags match mines and open tiles matches expected value */
-        if (flags === GAME.mines && openTiles === grid.length - GAME.mines) {
+        if (flags === GAME_CONFIG.mines && openTiles === grid.length - GAME_CONFIG.mines) {
             return "You Win!"
         }
 
@@ -196,7 +123,7 @@ class MinesweeperGame extends Component<{}, State> {
             <div className="app">
                 <div className="container">
                     <Controls
-                        mines={GAME.mines}
+                        mines={GAME_CONFIG.mines}
                         endGame={endFlag}
                         flagCounter={flagCounter}
                     />
@@ -213,4 +140,4 @@ class MinesweeperGame extends Component<{}, State> {
     }
 }
 
-export default MinesweeperGame;
+export default App;
