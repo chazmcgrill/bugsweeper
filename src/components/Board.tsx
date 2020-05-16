@@ -7,19 +7,17 @@ interface Props {
     handleRightClick: (id: number, e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 }
 
-const Board = (props: Props) => {
-    return (
-        <div className="game-board">
-            {props.grid.map((tile, index) => (
-                <Tile
-                    key={index}
-                    tileData={tile}
-                    handleTileClick={props.handleTileClick}
-                    handleRightClick={props.handleRightClick}
-                />
-            ))}
-        </div>
-    )
-}
+const Board = (props: Props) => (
+    <div className="game-board">
+        {props.grid.map((tile, index) => (
+            <Tile
+                key={index}
+                tileData={tile}
+                handleTileClick={props.handleTileClick}
+                handleRightClick={props.handleRightClick}
+            />
+        ))}
+    </div>
+);
 
 export default Board;

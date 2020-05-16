@@ -14,7 +14,7 @@ const Tile = ({tileData, handleTileClick, handleRightClick}: Props) => {
             case 0:
                 return '';
             case 9:
-                return <i className="fa fa-bug" />;
+                return <i className="fa fa-bug" data-testid="bug-icon" />;
             default:
                 return tileData.neighbours;
         }
@@ -28,12 +28,12 @@ const Tile = ({tileData, handleTileClick, handleRightClick}: Props) => {
     };
     
     return tileData.showing ? (
-        <div className="tile" style={tileStyle} test-id="tile-showing">
+        <div className="tile" style={tileStyle} data-testid="tile-showing">
             {tileInfo()}
         </div>
     ) : (
-        <div onClick={() => handleTileClick(tileData.id)} onContextMenu={(e) => handleRightClick(tileData.id, e)} className="tile" test-id="tile-flagged">
-            {tileData.flagged && <i className="fa fa-ban" />}
+        <div onClick={() => handleTileClick(tileData.id)} onContextMenu={(e) => handleRightClick(tileData.id, e)} className="tile" data-testid="tile">
+            {tileData.flagged && <i className="fa fa-ban" data-testid="flag-icon" />}
         </div>
     )
 };

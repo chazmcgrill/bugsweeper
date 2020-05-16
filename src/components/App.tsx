@@ -3,14 +3,17 @@ import Controls from './Controls';
 import Board from './Board';
 import Footer from './Footer';
 import { GAME_CONFIG } from '../utils/config';
-import { createNewBoard, endStateCheck, newTileStatus } from '../utils';
-
-export let floodStack = [] as number[];
+import * as utils from '../utils';
+import { createNewBoard } from '../utils/createNewBoard';
 
 interface GameState {
     grid: GridTile[];
     flagCounter: number;
     endFlag: boolean | string;
+}
+
+interface AppProps {
+    customBugIndexes?: number[];
 }
 
 const DEFAULT_GAME_STATE = {
@@ -22,7 +25,7 @@ const DEFAULT_GAME_STATE = {
 const toggleGridItemFlag = (grid: GridTile[], id: number) => grid
     .map(item => item.id === id ? { ...item, flagged: !item.flagged } : item);
 
-const App = () => {
+const App = ({ customBugIndexes }: AppProps) => {
     const [gameState, setGameState] = useState<GameState>(DEFAULT_GAME_STATE);
 
     const tileClick = (id: number): void => {
@@ -30,10 +33,10 @@ const App = () => {
         const currentItem = grid[id];
 
         if (!endFlag) {
-            const ids = newTileStatus(currentItem, grid);
+            const ids = utils.newTileStatus(currentItem, grid);
             const newGrid = grid.map((item, index) => ids.includes(index) ? { ...item, showing: true } : item);
-            
-            let newEndFlag = endStateCheck(grid, flagCounter);
+
+            let newEndFlag = utils.endStateCheck(newGrid, flagCounter);
 
             if (currentItem.neighbours === 9) newEndFlag = "Oops Game Over!"
 
@@ -47,22 +50,21 @@ const App = () => {
         if (!gameState.endFlag) {
             const grid = toggleGridItemFlag(gameState.grid, id);
             const flagCounter = grid.filter(n => n.flagged).length;
-            const endFlag = endStateCheck(grid, flagCounter);
+            const endFlag = utils.endStateCheck(grid, flagCounter);
 
             setGameState({ grid, endFlag, flagCounter })
         }
     }
 
     const handleReset = (): void => {
-        floodStack = [];
         const grid = createNewBoard();
         setGameState({ ...DEFAULT_GAME_STATE, grid });
     }
 
     useEffect(() => {
-        const grid = createNewBoard();
+        const grid = createNewBoard(customBugIndexes);
         setGameState({ ...DEFAULT_GAME_STATE, grid });
-    }, []);
+    }, [customBugIndexes]);
 
     const { grid, endFlag, flagCounter } = gameState;
 
@@ -70,7 +72,7 @@ const App = () => {
         <div className="app">
             <div className="container">
                 <Controls
-                    mines={GAME_CONFIG.mines}
+                    bugs={GAME_CONFIG.bugs}
                     endGame={endFlag}
                     flagCounter={flagCounter}
                 />

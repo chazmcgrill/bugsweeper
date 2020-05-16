@@ -1,49 +1,15 @@
 import { GAME_CONFIG } from "./config";
-import { floodStack } from "../components/App";
 
-enum TileStatus {
-    empty,
-    mine,
-}
+export let floodStack = [] as number[];
 
-export const createNewBoard = () => {
-    const totalArea = GAME_CONFIG.width * GAME_CONFIG.height;
-    // generate mined locations use recursion to not allow duplicates
-    let mineIndexs: number[] = [];
-
-    function getMines(): number {
-        let id = Math.floor(Math.random() * totalArea);
-        return mineIndexs.includes(id) ? getMines() : id;
-    }
-
-    while (mineIndexs.length < GAME_CONFIG.mines) {
-        mineIndexs.push(getMines());
-    }
-
-    // create grid with data for location and tile status
-    let baseGrid = Array
-        .apply(null, Array(totalArea))
-        .map((item, index) => {
-            const tile = mineIndexs.includes(index) ? TileStatus.mine : TileStatus.empty;
-            const row = Math.floor(index / GAME_CONFIG.width);
-            const col = index % GAME_CONFIG.width;
-
-            return { id: index, tile, row, col, showing: false, flagged: false }
-        });
-
-    // find neigbours for each cell
-    const grid = baseGrid.map(item => {
-        let neighbours = item.tile !== TileStatus.mine ? findNeighbours(item, mineIndexs) : 9;
-        return { ...item, neighbours };
-    });
-
-    return grid;
-}
+export const resetFloodStack = () => {
+    floodStack = [];
+};
 
 // get initial neigbours for each node
-export const findNeighbours = (item: GridTile, mines: number[]): number => {
+export const findNeighbours = (item: GridTile, bugIndexes: number[]): number => {
     let neigbours = getNeighbourIds(item);
-    return neigbours.filter(id => mines.includes(id)).length;
+    return neigbours.filter(id => bugIndexes.includes(id)).length;
 }
 
 // pass in a node get array of neighbours back
@@ -78,7 +44,7 @@ export const getNeighbourIds = (item: GridTile): number[] => {
 export const endStateCheck = (grid: GridTile[], flags: number): string | false => {
     const openTiles = grid.filter(t => t.showing === true).length;
 
-    if (flags === GAME_CONFIG.mines && openTiles === grid.length - GAME_CONFIG.mines) {
+    if (flags === GAME_CONFIG.bugs && openTiles === grid.length - GAME_CONFIG.bugs) {
         return "You Win!"
     }
 

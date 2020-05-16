@@ -7,7 +7,7 @@
     "@types/node": "12.7.5",
     "@types/react": "16.9.2",
     "@types/react-dom": "16.9.0",
-    "node-sass": "^4.13.1",
+    "node-sass": "^4.14.1",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-scripts": "^3.4.1",
@@ -16,8 +16,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "jest",
-    "testwatch": "react-scripts test",
+    "test": "react-scripts test --env=jest-environment-jsdom-sixteen",
     "eject": "react-scripts eject",
     "preversion": "npm test",
     "version": "git add .",
@@ -39,6 +38,7 @@
     ]
   },
   "devDependencies": {
-    "@testing-library/react": "^10.0.4"
+    "@testing-library/react": "^10.0.4",
+    "jest-environment-jsdom-sixteen": "^1.0.3"
   }
 }
