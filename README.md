@@ -7,7 +7,7 @@
 
 Recreation of the classic windows desktop game minesweeper.
 The aim of the game is to choose squares avoiding the randomly 
-placed mines. Flags can be placed by right clicking.
+placed bugs. Flags can be placed by right clicking.
 
 The most interesting part was working out how to clear the empty 
 cells. This required building a 'flood fill' algorithm and 

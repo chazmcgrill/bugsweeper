@@ -1,14 +1,14 @@
 import React from 'react';
 
 interface Props {
-	mines: number;
+	bugs: number;
 	endGame: boolean | string;
 	flagCounter: number;
 }
 
-const Controls = ({ mines, endGame, flagCounter }: Props) => (
+const Controls = ({ bugs, endGame, flagCounter }: Props) => (
 	<div className="controls">
-		<span>{endGame ? endGame : `Find ${mines - flagCounter} bugs`}</span>
+		<span>{endGame ? endGame : `Find ${bugs - flagCounter} bugs`}</span>
 	</div>
 )
 
