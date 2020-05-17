@@ -19,6 +19,7 @@ Play the game [here](https://bugsweeper.charlietaylorcoder.com/)
 - [React](https://reactjs.org/)
 - [Typescript](https://www.typescriptlang.org/)
 - [Sass](https://sass-lang.com/)
+- [React Testing Library](https://testing-library.com/docs/react-testing-library/intro)
 
 #### To Run Locally
 
