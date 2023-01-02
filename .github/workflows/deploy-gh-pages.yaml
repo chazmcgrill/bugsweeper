@@ -1,0 +1,18 @@
+name: Deploy
+
+on:
+    push:
+        branches: ['master']
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v3
+            - name: Deploying changes to github pages
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 18
+            - run: npm ci
+            - run: npm run deploy
