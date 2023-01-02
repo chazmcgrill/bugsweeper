@@ -42,7 +42,6 @@
         ]
     },
     "devDependencies": {
-        "@semantic-release/commit-analyzer": "^9.0.2",
         "sass": "^1.57.1"
     }
 }
