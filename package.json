@@ -36,7 +36,7 @@
         ]
     },
     "devDependencies": {
-        "@testing-library/react": "^10.0.4",
-        "conventional-changelog-conventionalcommits": "^5.0.0"
+        "@semantic-release/commit-analyzer": "^9.0.2",
+        "@testing-library/react": "^10.0.4"
     }
 }
