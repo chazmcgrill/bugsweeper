@@ -10,7 +10,6 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2
-            - name: Deploy App to GitHub Pages
             - uses: actions/setup-node@v3
               with:
                   node-version: 18
@@ -20,7 +19,6 @@ jobs:
               with:
                   github_token: ${{ secrets.GITHUB_TOKEN }}
                   publish_dir: ./build
-
             - name: Set Deployment Status
               run: |
                   echo ::set-output name=deployment_status::${{ job.status }}
