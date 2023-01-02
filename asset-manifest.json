@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/bugsweeper/static/css/main.7ec24a7a.css",
+    "main.js": "/bugsweeper/static/js/main.3fa50747.js",
+    "index.html": "/bugsweeper/index.html",
+    "main.7ec24a7a.css.map": "/bugsweeper/static/css/main.7ec24a7a.css.map",
+    "main.3fa50747.js.map": "/bugsweeper/static/js/main.3fa50747.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.7ec24a7a.css",
+    "static/js/main.3fa50747.js"
+  ]
+}
