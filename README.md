@@ -1,25 +1,25 @@
 # Bugsweeper Game
 
-[![CircleCI](https://circleci.com/gh/chazmcgrill/bugsweeper/tree/master.svg?style=svg)](https://circleci.com/gh/chazmcgrill/bugsweeper/tree/master)
+<!-- TODO: github pages badge -->
+
 [![GitHub Release](https://img.shields.io/github/v/release/chazmcgrill/bugsweeper)](https://github.com/chazmcgrill/bugsweeper/releases)
 [![PR's Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat)](http://makeapullrequest.com)
 [![Twitter Follow](https://img.shields.io/twitter/follow/charlietcoder.svg?style=social)](https://twitter.com/charlietcoder)
 
-Recreation of the classic windows desktop game minesweeper.
-The aim of the game is to choose squares avoiding the randomly 
-placed bugs. Flags can be placed by right clicking.
+Recreation of the classic windows desktop game minesweeper. The aim of the game is to choose squares avoiding the
+randomly placed bugs. Flags can be placed by right clicking.
 
-The most interesting part was working out how to clear the empty 
-cells. This required building a 'flood fill' algorithm and 
-applying this to the react logic.
+The most interesting part was working out how to clear the empty cells. This required building a 'flood fill' algorithm
+and applying this to the react logic.
 
 Play the game [here](https://bugsweeper.charlietaylorcoder.com/)
 
 #### Tech Stack
-- [React](https://reactjs.org/)
-- [Typescript](https://www.typescriptlang.org/)
-- [Sass](https://sass-lang.com/)
-- [React Testing Library](https://testing-library.com/docs/react-testing-library/intro)
+
+-   [React](https://reactjs.org/)
+-   [Typescript](https://www.typescriptlang.org/)
+-   [Sass](https://sass-lang.com/)
+-   [React Testing Library](https://testing-library.com/docs/react-testing-library/intro)
 
 #### To Run Locally
 

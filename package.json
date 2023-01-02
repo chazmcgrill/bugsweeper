@@ -1,5 +1,6 @@
 {
     "name": "bugsweeper-ts",
+    "homepage": "http://chazmcgrill.github.io/bugsweeper",
     "version": "1.3.0",
     "private": true,
     "dependencies": {
@@ -18,6 +19,8 @@
     },
     "scripts": {
         "start": "react-scripts start",
+        "predeploy": "npm run build",
+        "deploy": "gh-pages -d build",
         "build": "react-scripts build",
         "test": "react-scripts test",
         "test:nowatch": "react-scripts test --watchAll=false",
@@ -42,6 +45,7 @@
         ]
     },
     "devDependencies": {
+        "gh-pages": "^4.0.0",
         "sass": "^1.57.1"
     }
 }
