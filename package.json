@@ -29,7 +29,8 @@
         "pre-commit": "lint-staged",
         "check-types": "tsc --noEmit",
         "prettier": "prettier --ignore-path .gitignore \"**/*.+(js|json|ts|tsx)\"",
-        "validate": "npm run lint && npm run check-types && npm test"
+        "validate": "npm run lint && npm run check-types && npm test",
+        "prepare": "husky install"
     },
     "eslintConfig": {
         "extends": [
@@ -53,7 +54,8 @@
         "gh-pages": "^4.0.0",
         "lint-staged": "^13.1.0",
         "prettier": "^2.8.1",
-        "sass": "^1.57.1"
+        "sass": "^1.57.1",
+        "husky": "^8.0.0"
     },
     "lint-staged": {
         "*.{js,jsx,ts,tsx}": "eslint --cache --fix",
