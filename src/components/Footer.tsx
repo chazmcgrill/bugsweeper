@@ -1,4 +1,3 @@
-import React from 'react';
 import FooterIcon from './FooterIcon';
 
 const Footer = () => (
@@ -10,7 +9,8 @@ const Footer = () => (
             <FooterIcon url="www.linkedin.com/in/charliejbtaylor/" icon="linkedin" />
             <FooterIcon url="codepen.io/chazmcgrill/" icon="codepen" />
         </div>
-        <p className="footer-message">designed and coded by
+        <p className="footer-message">
+            designed and coded by
             <a href="http://www.charlietaylorcoder.com"> charlie taylor</a>
         </p>
     </footer>
