@@ -1,8 +1,9 @@
-import React from 'react';
+import { vi, it, expect } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
+import '@testing-library/jest-dom/vitest';
 import App from '../App';
 
-jest.mock('../../utils/config', () => ({
+vi.mock('../../utils/config', () => ({
     get GAME_CONFIG() {
         return {
             width: 10,
@@ -12,14 +13,14 @@ jest.mock('../../utils/config', () => ({
     },
 }));
 
-test('shows initial message', () => {
+it('shows initial message', () => {
     const { asFragment } = render(<App />);
     expect(screen.getAllByText('Find 2 bugs')).toBeTruthy();
     expect(screen.getAllByTestId('tile')).toHaveLength(100);
     expect(asFragment()).toMatchSnapshot();
 });
 
-test('right click tile adds flag icon', () => {
+it('right click tile adds flag icon', () => {
     render(<App />);
 
     const eventNode = screen.getAllByTestId('tile')[0];
@@ -31,7 +32,7 @@ test('right click tile adds flag icon', () => {
     expect(flagTile).toBeTruthy();
 });
 
-test('right click tile updates bug count', () => {
+it('right click tile updates bug count', () => {
     render(<App customBugIndexes={[0]} />);
     const eventNode = screen.getAllByTestId('tile')[0];
 
@@ -42,7 +43,7 @@ test('right click tile updates bug count', () => {
     expect(titleText).toBeTruthy();
 });
 
-test('pressing on bug ends game', () => {
+it('pressing on bug ends game', () => {
     render(<App customBugIndexes={[0]} />);
     const eventNode = screen.getAllByTestId('tile')[0];
 
@@ -53,7 +54,7 @@ test('pressing on bug ends game', () => {
     expect(titleText).toBeTruthy();
 });
 
-test('pressing on bug shows bug icon', () => {
+it('pressing on bug shows bug icon', () => {
     render(<App customBugIndexes={[0]} />);
     const eventNode = screen.getAllByTestId('tile')[0];
 
@@ -64,7 +65,7 @@ test('pressing on bug shows bug icon', () => {
     expect(tile).toBeTruthy();
 });
 
-test('pressing on non bug clears tiles', () => {
+it('pressing on non bug clears tiles', () => {
     render(<App customBugIndexes={[0]} />);
     const eventNode = screen.getAllByTestId('tile')[5];
 
@@ -75,7 +76,7 @@ test('pressing on non bug clears tiles', () => {
     expect(tile).toBeTruthy();
 });
 
-test('pressing new game resets board', () => {
+it('pressing new game resets board', () => {
     render(<App customBugIndexes={[0]} />);
     const eventNode = screen.getAllByTestId('tile')[5];
 
@@ -93,7 +94,7 @@ test('pressing new game resets board', () => {
     expect(tiles).toHaveLength(100);
 });
 
-test('on flagging all bugs win state is shown', () => {
+it('on flagging all bugs win state is shown', () => {
     render(<App customBugIndexes={[0, 1]} />);
     const bug1 = screen.getAllByTestId('tile')[0];
     const bug2 = screen.getAllByTestId('tile')[1];
