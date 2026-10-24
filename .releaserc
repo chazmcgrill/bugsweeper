@@ -1,21 +1,15 @@
 {
-  "branches": [
-    "master"
-  ],
-  "plugins": [
-    [
-      "@semantic-release/commit-analyzer",
-      {
-        "preset": "conventionalcommits"
-      }
+    "branches": [
+        "master"
     ],
-    "@semantic-release/release-notes-generator",
-    [
-      "@semantic-release/changelog",
-      {
-        "changelogFile": "docs/CHANGELOG.md"
-      }
-    ],
-    "@semantic-release/github"
-  ]
+    "plugins": [
+        [
+            "@semantic-release/commit-analyzer",
+            {
+                "preset": "conventionalcommits"
+            }
+        ],
+        "@semantic-release/release-notes-generator",
+        "@semantic-release/github"
+    ]
 }
