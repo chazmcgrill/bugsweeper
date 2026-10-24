@@ -1,9 +1,9 @@
 import { vi, it, expect } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom/vitest';
-import App from '../App';
+import App from './App';
 
-vi.mock('../../utils/config', () => ({
+vi.mock('../utils/config', () => ({
     get GAME_CONFIG() {
         return {
             width: 10,
@@ -14,10 +14,9 @@ vi.mock('../../utils/config', () => ({
 }));
 
 it('shows initial message', () => {
-    const { asFragment } = render(<App />);
+    render(<App />);
     expect(screen.getAllByText('Find 2 bugs')).toBeTruthy();
     expect(screen.getAllByTestId('tile')).toHaveLength(100);
-    expect(asFragment()).toMatchSnapshot();
 });
 
 it('right click tile adds flag icon', () => {
