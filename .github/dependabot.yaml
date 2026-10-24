@@ -28,7 +28,7 @@ updates:
       npm:
         patterns: ["*"]
     commit-message:
-      prefix: "fix"
+      prefix: "chore(deps)"
     pull-request-branch-name:
       separator: "-"
     cooldown:
