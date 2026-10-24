@@ -16,6 +16,9 @@ vi.mock('../utils/config', () => ({
     get GAME_CONFIG() {
         return mockConfig.GAME_CONFIG;
     },
+    get SOCIAL_CONFIG() {
+        return {};
+    },
 }));
 
 describe('Game', () => {
