@@ -1,109 +1,126 @@
-import { vi, it, expect } from 'vitest';
+import { vi, it, expect, describe, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom/vitest';
 import App from './App';
+import type { GameConfig } from '../utils/config';
+
+const mockConfig = vi.hoisted(() => ({
+    GAME_CONFIG: {
+        width: 10,
+        height: 10,
+        bugs: 2,
+    } as GameConfig,
+}));
 
 vi.mock('../utils/config', () => ({
     get GAME_CONFIG() {
-        return {
-            width: 10,
-            height: 10,
-            bugs: 2,
-        };
+        return mockConfig.GAME_CONFIG;
     },
 }));
 
-it('shows initial message', () => {
-    render(<App />);
-    expect(screen.getAllByText('Find 2 bugs')).toBeTruthy();
-    expect(screen.getAllByTestId('tile')).toHaveLength(100);
-});
+describe('Game', () => {
+    beforeEach(() => {
+        mockConfig.GAME_CONFIG = { width: 10, height: 10, bugs: 2 };
+    });
 
-it('right click tile adds flag icon', () => {
-    render(<App />);
+    it('shows initial message', () => {
+        render(<App />);
+        expect(screen.getAllByText('Find 2 bugs')).toBeTruthy();
+        expect(screen.getAllByTestId('tile')).toHaveLength(100);
+    });
 
-    const eventNode = screen.getAllByTestId('tile')[0];
+    it('right click tile adds flag icon', () => {
+        render(<App />);
 
-    fireEvent.contextMenu(eventNode);
+        const eventNode = screen.getAllByTestId('tile')[0];
 
-    const flagTile = screen.getByTestId('flag-icon');
+        fireEvent.contextMenu(eventNode);
 
-    expect(flagTile).toBeTruthy();
-});
+        const flagTile = screen.getByTestId('flag-icon');
 
-it('right click tile updates bug count', () => {
-    render(<App customBugIndexes={[0]} />);
-    const eventNode = screen.getAllByTestId('tile')[0];
+        expect(flagTile).toBeTruthy();
+    });
 
-    fireEvent.contextMenu(eventNode);
+    it('right click tile updates bug count', () => {
+        mockConfig.GAME_CONFIG = { width: 10, height: 10, bugs: 2, customBugIndexes: [0] };
+        render(<App />);
+        const eventNode = screen.getAllByTestId('tile')[0];
 
-    const titleText = screen.getByText('Find 1 bugs');
+        fireEvent.contextMenu(eventNode);
 
-    expect(titleText).toBeTruthy();
-});
+        const titleText = screen.getByText('Find 1 bugs');
 
-it('pressing on bug ends game', () => {
-    render(<App customBugIndexes={[0]} />);
-    const eventNode = screen.getAllByTestId('tile')[0];
+        expect(titleText).toBeTruthy();
+    });
 
-    fireEvent.click(eventNode);
+    it('pressing on bug ends game', () => {
+        mockConfig.GAME_CONFIG = { width: 10, height: 10, bugs: 2, customBugIndexes: [0] };
+        render(<App />);
+        const eventNode = screen.getAllByTestId('tile')[0];
 
-    const titleText = screen.getByText('Oops Game Over!');
+        fireEvent.click(eventNode);
 
-    expect(titleText).toBeTruthy();
-});
+        const titleText = screen.getByText('Oops Game Over!');
 
-it('pressing on bug shows bug icon', () => {
-    render(<App customBugIndexes={[0]} />);
-    const eventNode = screen.getAllByTestId('tile')[0];
+        expect(titleText).toBeTruthy();
+    });
 
-    fireEvent.click(eventNode);
+    it('pressing on bug shows bug icon', () => {
+        mockConfig.GAME_CONFIG = { width: 10, height: 10, bugs: 2, customBugIndexes: [0] };
+        render(<App />);
+        const eventNode = screen.getAllByTestId('tile')[0];
 
-    const tile = screen.getByTestId('bug-icon');
+        fireEvent.click(eventNode);
 
-    expect(tile).toBeTruthy();
-});
+        const tile = screen.getByTestId('bug-icon');
 
-it('pressing on non bug clears tiles', () => {
-    render(<App customBugIndexes={[0]} />);
-    const eventNode = screen.getAllByTestId('tile')[5];
+        expect(tile).toBeTruthy();
+    });
 
-    fireEvent.click(eventNode);
+    it('pressing on non bug clears tiles', () => {
+        mockConfig.GAME_CONFIG = { width: 10, height: 10, bugs: 2, customBugIndexes: [0] };
+        render(<App />);
+        const eventNode = screen.getAllByTestId('tile')[5];
 
-    const tile = screen.getAllByTestId('tile-showing');
+        fireEvent.click(eventNode);
 
-    expect(tile).toBeTruthy();
-});
+        const tile = screen.getAllByTestId('tile-showing');
 
-it('pressing new game resets board', () => {
-    render(<App customBugIndexes={[0]} />);
-    const eventNode = screen.getAllByTestId('tile')[5];
+        expect(tile).toBeTruthy();
+    });
 
-    fireEvent.click(eventNode);
+    it('pressing new game resets board', () => {
+        mockConfig.GAME_CONFIG = { width: 10, height: 10, bugs: 2, customBugIndexes: [0] };
+        render(<App />);
+        const eventNode = screen.getAllByTestId('tile')[5];
 
-    screen.getAllByTestId('tile-showing');
+        fireEvent.click(eventNode);
 
-    const button = screen.getByText('New Game');
+        screen.getAllByTestId('tile-showing');
 
-    fireEvent.click(button);
+        const button = screen.getByText('New Game');
 
-    const tiles = screen.getAllByTestId('tile');
+        fireEvent.click(button);
 
-    expect(screen.getByText('Find 2 bugs')).toBeTruthy();
-    expect(tiles).toHaveLength(100);
-});
+        const tiles = screen.getAllByTestId('tile');
 
-it('on flagging all bugs win state is shown', () => {
-    render(<App customBugIndexes={[0, 1]} />);
-    const bug1 = screen.getAllByTestId('tile')[0];
-    const bug2 = screen.getAllByTestId('tile')[1];
-    const nonBug = screen.getAllByTestId('tile')[99];
+        expect(screen.getByText('Find 2 bugs')).toBeTruthy();
+        expect(tiles).toHaveLength(100);
+    });
 
-    fireEvent.contextMenu(bug1);
-    fireEvent.contextMenu(bug2);
-    fireEvent.click(nonBug);
+    it('on flagging all bugs win state is shown', () => {
+        mockConfig.GAME_CONFIG = { width: 10, height: 10, bugs: 2, customBugIndexes: [0, 1] };
+        render(<App />);
+        const bug1 = screen.getAllByTestId('tile')[0];
+        const bug2 = screen.getAllByTestId('tile')[1];
+        const nonBug = screen.getAllByTestId('tile')[99];
 
-    const headerText = screen.getByText('You Win!');
+        fireEvent.contextMenu(bug1);
+        fireEvent.contextMenu(bug2);
+        fireEvent.click(nonBug);
 
-    expect(headerText).toBeTruthy();
+        const headerText = screen.getByText('You Win!');
+
+        expect(headerText).toBeTruthy();
+    });
 });
