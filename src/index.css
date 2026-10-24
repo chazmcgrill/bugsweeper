@@ -1,0 +1,114 @@
+:root {
+    --bg: #a8dba8;
+    --contrast: #79bd9a;
+    --light: #cff09e;
+    --dark: #204A4D;
+    --dark-hover: #2c6b6f
+}
+
+body {
+    background: var(--bg);
+    color: var(--dark);
+}
+
+.app {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.container {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 22px;
+    margin: 40px auto;
+    width: 100%;
+    height: 430px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+@media screen and (min-width: 640px) {
+    .container {
+        font-size: 18px;
+    }
+}
+
+.game-board {
+    width: 305px;
+    border: 5px solid var(--light);
+    padding: 5px;
+    text-align: center;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+    grid-gap: 5px;
+    border-radius: 5px;
+}
+
+.tile {
+    background: var(--light);
+    border-radius: 2px;
+    height: 25px;
+    width: 25px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tile:hover {
+    background: var(--contrast);
+}
+
+button {
+    font-family: inherit;
+    font-size: inherit;
+    padding: 0.3em 0.7em;
+    background: var(--bg);
+    border: 2px solid var(--dark);
+    border-radius: 5px;
+    cursor: pointer;
+    color: var(--dark);
+    transition: color 0.5s, background 0.5s;
+    outline: none;
+    z-index: 1;
+}
+
+button:hover {
+    color: var(--bg);
+    background: var(--dark);
+}
+
+footer {
+    background: var(--bg);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    padding: 30px 0;
+}
+
+.footer-icons i {
+    font-size: 1.2rem;
+    margin: 0 5px;
+}
+
+.footer-message {
+    font-family: sans-serif;
+    font-size: 0.6rem;
+    margin-bottom: 0;
+}
+
+a {
+    color: var(--dark);
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--dark-hover);
+}
