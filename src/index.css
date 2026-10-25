@@ -2,11 +2,15 @@
     --bg: #a8dba8;
     --contrast: #79bd9a;
     --light: #cff09e;
-    --dark: #204A4D;
-    --dark-hover: #2c6b6f
+    --dark: #204a4d;
+    --dark-hover: #2c6b6f;
 }
 
 body {
+    font-family: 'Roboto Mono', monospace;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
     background: var(--bg);
     color: var(--dark);
 }
@@ -19,7 +23,6 @@ body {
 }
 
 .container {
-    font-family: 'Roboto Mono', monospace;
     font-size: 22px;
     margin: 40px auto;
     width: 100%;
@@ -74,7 +77,9 @@ button {
     border-radius: 5px;
     cursor: pointer;
     color: var(--dark);
-    transition: color 0.5s, background 0.5s;
+    transition:
+        color 0.5s,
+        background 0.5s;
     outline: none;
     z-index: 1;
 }
@@ -93,13 +98,11 @@ footer {
     padding: 30px 0;
 }
 
-.footer-icons i {
-    font-size: 1.2rem;
+.footer-icons a {
     margin: 0 5px;
 }
 
 .footer-message {
-    font-family: sans-serif;
     font-size: 0.6rem;
     margin-bottom: 0;
 }

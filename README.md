@@ -3,7 +3,7 @@
 [![Deployment Status](https://github.com/chazmcgrill/bugsweeper/workflows/Deploy/badge.svg)](https://github.com/chazmcgrill/bugsweeper/actions?query=workflow%3ADeploy)
 [![GitHub Release](https://img.shields.io/github/v/release/chazmcgrill/bugsweeper)](https://github.com/chazmcgrill/bugsweeper/releases)
 [![PR's Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat)](http://makeapullrequest.com)
-[![Twitter Follow](https://img.shields.io/twitter/follow/charlietcoder.svg?style=social)](https://twitter.com/charlietcoder)
+[![Follow me on Bluesky](https://img.shields.io/badge/Bluesky-0285FF?logo=bluesky&logoColor=fff&label=Follow%20me%20on&color=0285FF)](https://bsky.app/profile/charlietaylor.dev)
 
 Recreation of the classic windows desktop game minesweeper. The aim of the game is to choose squares avoiding the
 randomly placed bugs. Flags can be placed by right clicking.
@@ -23,7 +23,7 @@ Play the game [here](https://bugsweeper.charlietaylorcoder.com/)
 #### To Run Locally
 
 1. Fork or clone this repo
-2. Run `npm install` to install dependencies
+2. Run `npm ci` to install dependencies
 3. Run `npm start` to start the dev server
 
 #### Contributions
