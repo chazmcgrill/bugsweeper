@@ -11,7 +11,7 @@ randomly placed bugs. Flags can be placed by right clicking.
 The most interesting part was working out how to clear the empty cells. This required building a 'flood fill' algorithm
 and applying this to the react logic.
 
-Play the game [here](https://bugsweeper.charlietaylorcoder.com/)
+Play the game [here](https://chazmcgrill.github.io/bugsweeper/)
 
 #### Tech Stack
 
