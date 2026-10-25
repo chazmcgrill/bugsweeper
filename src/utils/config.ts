@@ -36,9 +36,3 @@ export const SOCIAL_CONFIG = {
         icon: FaCodepen,
     },
 } as const;
-
-// <FooterIcon url="www.freecodecamp.com/chazmcgrill" icon="free-code-camp" />
-// <FooterIcon url="twitter.com/charlietcoder" icon="twitter" />
-// <FooterIcon url="github.com/chazmcgrill" icon="github" />
-// <FooterIcon url="www.linkedin.com/in/charliejbtaylor/" icon="linkedin" />
-// <FooterIcon url="codepen.io/chazmcgrill/" icon="codepen" />
